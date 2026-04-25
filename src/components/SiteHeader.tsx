@@ -1,16 +1,19 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X, Scale } from "lucide-react";
-
-const navItems = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/practice-areas", label: "Practice Areas" },
-  { to: "/contact", label: "Contact" },
-] as const;
+import { useI18n } from "@/lib/i18n";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const { t } = useI18n();
+
+  const navItems = [
+    { to: "/", label: t("nav.home") },
+    { to: "/about", label: t("nav.about") },
+    { to: "/practice-areas", label: t("nav.practice") },
+    { to: "/contact", label: t("nav.contact") },
+  ] as const;
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-background/85 border-b border-border">
@@ -22,12 +25,12 @@ export function SiteHeader() {
           <span className="flex flex-col leading-tight">
             <span className="font-serif text-xl font-semibold text-ink">Sylejman Barja</span>
             <span className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-              Avokat · Attorney at Law
+              {t("header.role")}
             </span>
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-10">
+        <nav className="hidden md:flex items-center gap-8">
           {navItems.map((item) => (
             <Link
               key={item.to}
@@ -39,6 +42,7 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
+          <LanguageSwitcher />
           <a
             href="tel:+38345883034"
             className="inline-flex items-center px-5 py-2.5 text-sm font-semibold rounded-sm bg-primary text-primary-foreground hover:bg-ink transition-colors"
@@ -47,13 +51,16 @@ export function SiteHeader() {
           </a>
         </nav>
 
-        <button
-          aria-label="Toggle menu"
-          className="md:hidden p-2"
-          onClick={() => setOpen(!open)}
-        >
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        <div className="md:hidden flex items-center gap-3">
+          <LanguageSwitcher />
+          <button
+            aria-label="Toggle menu"
+            className="p-2"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -75,7 +82,7 @@ export function SiteHeader() {
               href="tel:+38345883034"
               className="mt-2 text-center px-5 py-3 rounded-sm bg-primary text-primary-foreground font-semibold"
             >
-              Call +383 45 883 034
+              {t("header.callMobile")}
             </a>
           </nav>
         </div>
